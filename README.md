@@ -4,6 +4,8 @@
 
 
 
+最近修复：Codex 当前点击/轻触会触发标准动作第 4 行，所以这一行已经从跳跃改成 5 帧夸张大笑。现在点击豆包会大笑，不会再跳起来。
+
 > 非官方作品，仅用于个人学习、展示和 Codex 宠物创作示例；不隶属于豆包、字节跳动或任何官方产品。
 
 ## 效果预览
@@ -44,13 +46,15 @@ cp pet/pet.json pet/spritesheet.webp ~/.codex/pets/doubao/
 
 如果 Codex 已经打开，可能需要重启或重新加载宠物列表。
 
+如果鼠标方向跟随没有立刻生效，请确认使用的是 `custom:doubao`，并重启 Codex 或切换到其他宠物后再切回豆包。这个包的 `pet.json` 已启用 `spriteVersionNumber: 2`，spritesheet 的第 9、10 行包含完整 16 个方向帧。
+
 ## 动画内容
 
 - `idle`：未工作时的安静待机，包含轻微呼吸和眨眼。
 - `running-right`：向右移动动画。
 - `running-left`：向左移动动画。
-- `waving`：点击触发的夸张大笑反应。
-- `jumping`：轻快跳跃动作。
+- `waving`：备用互动/大笑动作，保留夸张笑脸反馈。
+- `jumping`：Codex 点击/轻触触发行，已改为 5 帧夸张大笑。
 - `failed`：失败或受阻时的小失落动作。
 - `waiting`：等待用户输入或授权时的期待动作。
 - `running`：工作中/处理中动画，表现为原地专注思考，不是移动跑步。
@@ -70,6 +74,8 @@ cp pet/pet.json pet/spritesheet.webp ~/.codex/pets/doubao/
 本作品已经通过 v2 atlas 校验：尺寸、透明通道、空白单元格、chroma despill 和方向 QA 均已完成。
 
 本仓库保留了本次瘦身调整脚本 `tools/slim_pet_atlas.py`，默认横向比例为 `0.86`。它按单元格处理透明 spritesheet，不会改变 atlas 尺寸或动画行列结构。
+
+`tools/fix_codex_bindings.py` 用来修复 Codex 点击动作绑定：把大笑动作复制到运行时实际点击触发的第 4 行，同时保留 v2 方向跟随行。
 
 ## 项目结构
 
@@ -96,6 +102,7 @@ cp pet/pet.json pet/spritesheet.webp ~/.codex/pets/doubao/
     ├── pet.json
     └── spritesheet.webp
 └── tools
+    ├── fix_codex_bindings.py
     └── slim_pet_atlas.py
 ```
 
