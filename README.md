@@ -4,7 +4,11 @@
 
 
 
-最近修复：Codex 当前点击/轻触会触发标准动作第 4 行，所以这一行已经从跳跃改成 5 帧夸张大笑。现在点击豆包会大笑，不会再跳起来。
+最近修复：
+
+- Codex 当前点击/轻触会触发标准动作第 4 行，所以这一行已经从跳跃改成 5 帧夸张大笑。现在点击豆包会大笑，不会再跳起来。
+- 增强了 v2 第 9、10 行的 16 个看向方向：按 Codex 固定顺序 `000 up -> 090 right -> 180 down -> 270 left` 对齐，并放大头部转向幅度，让默认小尺寸下也能看出豆包在跟随指针方向。
+- 加强了未工作待机和工作中动画。Codex 工作状态会播放几轮第 7 行后回到第 0 行循环，所以第 0 行现在也加入了慢速环视和眨眼，避免长时间任务里豆包傻站不动。
 
 > 非官方作品，仅用于个人学习、展示和 Codex 宠物创作示例；不隶属于豆包、字节跳动或任何官方产品。
 
@@ -77,6 +81,10 @@ cp pet/pet.json pet/spritesheet.webp ~/.codex/pets/doubao/
 
 `tools/fix_codex_bindings.py` 用来修复 Codex 点击动作绑定：把大笑动作复制到运行时实际点击触发的第 4 行，同时保留 v2 方向跟随行。
 
+`tools/enhance_look_rows.py` 用来增强 v2 看向帧：只处理第 9、10 行，通过轻微放大和刚性移动头部区域强化方向感，不旋转整个人物，也不改变 atlas 网格。
+
+`tools/enhance_idle_work_rows.py` 用来加强待机和工作状态：第 0 行加入慢速环视/眨眼，第 7 行保留思考手势并增加轻微上下动势。
+
 ## 项目结构
 
 ```text
@@ -103,6 +111,8 @@ cp pet/pet.json pet/spritesheet.webp ~/.codex/pets/doubao/
     └── spritesheet.webp
 └── tools
     ├── fix_codex_bindings.py
+    ├── enhance_look_rows.py
+    ├── enhance_idle_work_rows.py
     └── slim_pet_atlas.py
 ```
 
