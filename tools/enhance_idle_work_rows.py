@@ -3,8 +3,8 @@
 
 Codex plays non-idle state rows a few times, then falls back to the idle loop.
 If idle is too static, the mascot appears to stand still during longer work.
-This repair keeps the standing body style but turns idle into a slow glance and
-blink loop, and adds a subtle body bob to the working row.
+This repair turns idle into a background thinking loop and adds a subtle body
+bob to the working row.
 """
 
 from __future__ import annotations
@@ -41,12 +41,14 @@ def enhance_idle_and_work(input_path: Path, output_path: Path) -> None:
 
     output = atlas.copy()
 
-    # Row 0 duration is long in Codex, so use broad, readable changes: neutral,
-    # glance right, blink, glance left, attentive up, and neutral hold.
-    idle_sources = [(0, 0), (9, 1), (0, 2), (10, 5), (9, 0), (0, 0), (0, 0)]
-    for target_col, (source_row, source_col) in enumerate(idle_sources):
+    # Codex falls back to row 0 after a few row-7 cycles. Use row-7 thinking
+    # poses for the actual six-frame idle loop so long jobs still look active.
+    idle_sources = [(7, 0), (7, 1), (7, 2), (7, 4), (7, 5), (7, 3), (7, 2)]
+    idle_offsets = [(0, 0), (0, -2), (1, -1), (-1, -2), (0, 0), (0, -1), (0, 0)]
+    for target_col, ((source_row, source_col), (dx, dy)) in enumerate(zip(idle_sources, idle_offsets)):
         clear_cell(output, 0, target_col)
-        output.alpha_composite(atlas.crop(cell_box(source_row, source_col)), (target_col * CELL_W, 0))
+        cell = atlas.crop(cell_box(source_row, source_col))
+        output.alpha_composite(shifted_cell(cell, dx, dy), (target_col * CELL_W, 0))
     clear_cell(output, 0, 7)
 
     # Row 7 is the runtime "working/running" state. The row itself already has
