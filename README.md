@@ -2,6 +2,8 @@
 
 一个基于豆包头像参考制作的 Codex 自定义桌面宠物。
 
+当前版本已经做过整体瘦身处理：每个动画 cell 内的可见像素统一横向收窄，保留原动作节奏、表情和 v2 方向跟随。
+
 > 非官方作品，仅用于个人学习、展示和 Codex 宠物创作示例；不隶属于豆包、字节跳动或任何官方产品。
 
 ## 效果预览
@@ -67,6 +69,8 @@ cp pet/pet.json pet/spritesheet.webp ~/.codex/pets/doubao/
 
 本作品已经通过 v2 atlas 校验：尺寸、透明通道、空白单元格、chroma despill 和方向 QA 均已完成。
 
+本仓库保留了本次瘦身调整脚本 `tools/slim_pet_atlas.py`，默认横向比例为 `0.86`。它按单元格处理透明 spritesheet，不会改变 atlas 尺寸或动画行列结构。
+
 ## 项目结构
 
 ```text
@@ -75,17 +79,24 @@ cp pet/pet.json pet/spritesheet.webp ~/.codex/pets/doubao/
 ├── LICENSE
 ├── assets
 │   ├── contact-sheet-extended.png
+│   ├── chroma-despill-extended.json
 │   ├── look-directions.png
+│   ├── validation-extended.json
 │   └── previews
 │       ├── click-laugh.gif
+│       ├── failed.gif
 │       ├── idle.gif
+│       ├── jumping.gif
 │       ├── review.gif
 │       ├── running-left.gif
 │       ├── running-right.gif
+│       ├── waiting.gif
 │       └── working.gif
-└── pet
+├── pet
     ├── pet.json
     └── spritesheet.webp
+└── tools
+    └── slim_pet_atlas.py
 ```
 
 ## 许可
